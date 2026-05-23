@@ -11,6 +11,13 @@
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   
   <style>
+    @font-face {
+      font-family: 'Luna';
+      src: url('assets/fonts/Luna.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     body {
       background: url('assets/bg-totoro.jpg') no-repeat center center fixed;
       background-size: cover;
@@ -35,6 +42,39 @@
     .outer-card .text-center.mb-4,
     .outer-card .d-flex.justify-content-center {
       background: transparent;
+    }
+
+    .outer-card .text-center.mb-4 h2 {
+      font-family: 'Luna', cursive, sans-serif;
+      letter-spacing: 1px;
+      font-size: 2.2rem;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      .outer-card .text-center.mb-4 h2 {
+        font-size: 1.5rem;
+        white-space: normal;
+        text-align: center;
+      }
+    }
+
+    .accordion-button.collapsed {
+      font-family: 'Luna', cursive, sans-serif;
+      font-weight: normal;
+      background: transparent ;
+    }
+
+    .accordion-button:not(.collapsed) {
+      font-family: 'Luna', cursive, sans-serif;
+      font-weight: normal;
+      background: transparent ;
+      color: #209e69;
+    }
+
+    .btn-warning {
+      font-family: 'Luna', cursive, sans-serif;
+      letter-spacing: 1px;
     }
     
     .general-error {
@@ -63,12 +103,12 @@
       margin-bottom: 0 ;
       border-radius: 0 ;
       border: none;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       background: transparent;
       overflow: visible;
     }
     
-    /* Background layer */
+    /* Background layer  */
     .accordion-item .bg-layer {
       position: absolute;
       top: 0;
@@ -94,13 +134,11 @@
       background-size: cover;
     }
     
-    /* Button area */
     .accordion-header {
       position: relative;
       z-index: 1;
     }
     
-    /* Content area */
     .accordion-body {
       background-color: rgba(255, 255, 245, 0.95);
       border-radius: 0;
@@ -109,9 +147,8 @@
       z-index: 1;
     }
     
-    /* Button style */
     .accordion-button {
-      background: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.4) 100%);
+      background: transparent ;
       font-weight: bold;
       padding: 1rem 1.25rem;
       border: none;
@@ -121,19 +158,18 @@
       position: relative;
       z-index: 2;
     }
-    .accordion-button:not(.collapsed) {
-      background: linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.5) 100%);
-      color: #209e69;
-    }
     .accordion-button:focus {
       box-shadow: none;
       border-color: transparent;
     }
     .accordion-button:hover {
-      background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.55) 100%);
+      background: rgba(0, 0, 0, 0.15) ;
     }
     
-    /* Place card style */
+    .accordion-button:not(.collapsed) {
+      color: #ffd966;
+    }
+    
     .place-card {
       cursor: pointer;
       transition: all 0.2s ease;
@@ -161,7 +197,6 @@
       font-weight: 500;
     }
     
-    /* Summary section */
     .summary-section {
       background-color: #fffef7 ;  
       border-radius: 1rem;
@@ -227,7 +262,7 @@
   <div class="container py-4">
     <div class="outer-card">
       <div class="text-center mb-4">
-        <h1 class="display-4 fw-bold" style="color: #ffd966; text-shadow: 2px 2px 0 #2c3e2f;">Ghibli Park Itinerary Builder</h1>
+        <h2 class="display-4 fw-bold" style="color: #45d240; text-shadow: 2px 2px 0 #2c3e2f;">Ghibli Park Itinerary Builder</h2>
         <hr class="my-3 bg-light">
       </div>
 
@@ -269,7 +304,7 @@
           </div>
         </div>
 
-        <!-- 2. Ghibli Park Selection  -->
+        <!-- 2. Ghibli Park Selection -->
         <div class="accordion-item item-2">
           <div class="bg-layer"></div>
           <h2 class="accordion-header" id="headingTwo">
@@ -287,14 +322,13 @@
                 {{ placesError }}
               </div>
               <div v-else>
-                <p class="text-muted mb-2">✨ Click on any card to select. Click again to deselect. (Multiple selections allowed)</p>
+                <p class="text-muted mb-2">Click on any card to select. Click again to deselect. (Multiple selections allowed)</p>
                 <div class="row g-3">
                   <div class="col-md-4 col-sm-6" v-for="place in places" :key="place.id">
                     <div class="card place-card" :class="{ selected: isPlaceSelected(place.id) }" @click="togglePlace(place)">
                       <img :src="place.image" class="card-img-top" :alt="place.name" @error="e => e.target.src='https://via.placeholder.com/300x150?text=Ghibli+Corner'">
                       <div class="card-body">
                         <h6 class="card-title fw-bold">{{ place.name }}</h6>
-                        
                         <p class="card-text small text-secondary">{{ place.description }}</p>
                       </div>
                     </div>
@@ -497,11 +531,6 @@
         }
       };
 
-      const truncate = (text, len) => {
-        if (!text) return '';
-        return text.length > len ? text.substring(0, len) + '…' : text;
-      };
-
       const loadPlaces = async () => {
         isLoadingPlaces.value = true;
         placesError.value = '';
@@ -645,7 +674,6 @@
         showSummary,
         isPlaceSelected,
         togglePlace,
-        truncate,
         loadPlaces,
         clearErrors,
         validateForm,
